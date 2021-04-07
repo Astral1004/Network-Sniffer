@@ -1,0 +1,107 @@
+<script src="http://192.168.12.37:8000/socket.io/socket.io.js"></script>
+<script src="/js/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#datatable1').DataTable({
+      iDisplayLength: 20,
+    });
+    $('#tcp').DataTable();
+    $('#udp').DataTable({
+      columns: [
+        {
+          title: 'IP отправителя',
+          data: 'array.IpTO',
+        },
+        {
+          title: 'IP получаетля',
+          data: 'array.IpFROM',
+        },
+        {
+          title: 'Протокол',
+          data: 'array.protocol',
+        },
+        {
+          title: 'Кол-во пакетов',
+          data: 'count',
+        },
+        {
+          title: 'Сумма пакетов',
+          data: 'size',
+        },
+        {
+          title: 'Время',
+          data: 'date',
+        },
+      ],
+    });
+    $('#datatable4').DataTable({
+      columns: [
+        {
+          title: 'IP отправителя',
+          data: 'array.IpTO',
+        },
+        {
+          title: 'IP получаетля',
+          data: 'array.IpFROM',
+        },
+        {
+          title: 'Протокол',
+          data: 'array.protocol',
+        },
+        {
+          title: 'Кол-во пакетов',
+          data: 'count',
+        },
+        {
+          title: 'Сумма пакетов',
+          data: 'size',
+        },
+        {
+          title: 'Время',
+          data: 'date',
+        },
+      ],
+    });
+    $('#datatable5').DataTable();
+    $('#table_logs').DataTable({
+      aoColumnDefs: [{ aTargets: [3], bSortable: false }],
+    });
+
+    $('#journal_apk').DataTable({
+      aoColumnDefs: [{ aTargets: [8, 9], bSortable: false }],
+    });
+
+    $('#table_complexes').DataTable({
+      aoColumnDefs: [{ aTargets: [6], bSortable: false }],
+    });
+    $('#settings_file_apk__file_info').DataTable({
+      searching: false,
+      bLengthChange: false,
+      aoColumnDefs: [{ aTargets: [0, 1], bSortable: false }],
+    });
+    $('#settings_file_apk__log_info').DataTable({
+      aoColumnDefs: [{ aTargets: [3], bSortable: false }],
+    });
+    $('#table_result_setting_file_apk').DataTable({
+      searching: false,
+      bLengthChange: false,
+
+      aoColumnDefs: [
+        { aTargets: [0, 1], bSortable: false },
+      ],
+    });
+    $('#table_settings_file').DataTable({
+      searching: false,
+      iDisplayLength: 5,
+      bLengthChange: false,
+      aoColumnDefs: [{ aTargets: [3], bSortable: false }],
+    });
+    $('#table_filehandling').DataTable({
+      aoColumnDefs: [{ aTargets: [2, 3, 4, 5, 6], bSortable: false }],
+    });
+
+    $('#languages').select2();
+    $('#servers').select2();
+  });
+</script>

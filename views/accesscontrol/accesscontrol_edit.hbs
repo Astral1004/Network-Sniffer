@@ -1,0 +1,186 @@
+<div class="col-md-12 col-sm-12">
+  <div class="x_panel">
+    <div class="page-title">
+      <h1>Изменение роли</h1>
+      <div class="clearfix"></div>
+    </div>
+    <div class="page-content">
+      <form class="accesscontrolForm" action="" method="POST">
+        <div class="col-md-12" style="background-color: #fff">
+          <div class="row" style="padding-top: 15px">
+            <div class="field item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align"
+                >Наименование роли:<span class="required">*</span></label
+              >
+              <div class="col-md-6 col-sm-6">
+                <input
+                  class="form-control"
+                  id="name"
+                  type="text"
+                  name="name"
+                  placeholder="Введите роль"
+                  required="required"
+                  value="{{ access.name }}"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-top: 15px; padding-bottom: 15px">
+            <div class="field item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align"
+                >Шаблон:<span class="required">*</span></label
+              >
+              <div class="col-md-6 col-sm-6">
+                <select
+                  class="form-control selectAccess"
+                  name="template"
+                  readonly
+                >
+                  {{#if (isAdminAPK access.template)}}
+                  <option selected value="Админ">Админ</option>
+                  {{/if}}
+                  {{#if (isAdminOperator access.template)}}
+                  <option selected value="Админ (оператор)">
+                    Админ (оператор)
+                  </option>
+                  {{/if}}
+                </select>
+              </div>
+            </div>
+          </div>
+          {{#if (isAdminAPK access.template)}}
+          <div
+            class="row"
+            style="border-bottom: 1px solid #cdcdcd; padding-bottom: 5px"
+          >
+            <label class="col-form-label col-md-3 col-sm-3 label-align"
+              >Статистика:</label
+            >
+            <div
+              class="col-md-9 col-sm-9 d-flex justify-content-start align-self-center"
+            >
+              <div class="row col-md-12">
+                <div class="d-flex align-self-start">
+                  <input
+                    type="checkbox"
+                    class="flat"
+                    value="true"
+                    name="viewStatistics"
+                    style="margin-top: 3px; width: 15px; height: 15px"
+                    {{checked
+                    access.view.viewStatistics.flag}}
+                  />
+                  <span style="margin-left: 5px"> Статистика </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            style="
+              border-bottom: 1px solid #cdcdcd;
+              padding-bottom: 5px;
+              padding-top: 5px;
+            "
+          >
+            <label class="col-form-label col-md-3 col-sm-3 label-align"
+              >Пользователи:</label
+            >
+            <div
+              class="col-md-9 col-sm-9 d-flex justify-content-start align-self-center"
+            >
+              <div class="row col-md-12 flex-column">
+                <div class="d-flex align-self-start">
+                  <input
+                    type="checkbox"
+                    class="flat"
+                    value="true"
+                    name="viewUsers"
+                    style="margin-top: 3px; width: 15px; height: 15px"
+                    {{checked
+                    access.view.viewUsers.flag}}
+                  />
+                  <span style="margin-left: 5px"> Пользователи </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            style="
+              border-bottom: 1px solid #cdcdcd;
+              padding-bottom: 5px;
+              padding-top: 5px;
+            "
+          >
+            <label class="col-form-label col-md-3 col-sm-3 label-align"
+              >Матрица разгранчения доступа:</label
+            >
+            <div
+              class="col-md-9 col-sm-9 d-flex justify-content-start align-self-center"
+            >
+              <div class="row col-md-12 flex-column">
+                <div class="d-flex align-self-start">
+                  <input
+                    type="checkbox"
+                    class="flat"
+                    value="true"
+                    name="viewMatrix"
+                    style="margin-top: 3px; width: 15px; height: 15px"
+                    {{checked
+                    access.view.viewMatrix.flag}}
+                  />
+                  <span style="margin-left: 5px">
+                    Матрица разгранчения доступа
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {{/if}}
+          {{#if (isAdminOperator access.template)}}
+          <div
+            class="row"
+            style="border-bottom: 1px solid #cdcdcd; padding-bottom: 5px"
+          >
+            <label class="col-form-label col-md-3 col-sm-3 label-align"
+              >Статистика:</label
+            >
+            <div
+              class="col-md-9 col-sm-9 d-flex justify-content-start align-self-center"
+            >
+              <div class="row col-md-12">
+                <div class="d-flex align-self-start">
+                  <input
+                    type="checkbox"
+                    class="flat"
+                    value="true"
+                    name="viewStatistics"
+                    style="margin-top: 3px; width: 15px; height: 15px"
+                    {{checked
+                    access.view.viewStatistics.flag}}
+                  />
+                  <span style="margin-left: 5px"> Статистика </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {{/if}}
+        </div>
+
+        <input type="hidden" name="_csrf" value="{{ csrf }}" />
+        <div class="field form-group" style="float: right; padding-top: 15px">
+          <div class="col-md-12" style="padding-right: 0 !important">
+            <a href="/accesscontrol" class="btn btn-danger"> Отмена </a>
+            <button type="submit" class="btn btn-success accesscontrol_btn">
+              Изменить
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

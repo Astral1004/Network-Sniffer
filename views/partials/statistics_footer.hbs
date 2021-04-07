@@ -1,0 +1,229 @@
+<script src="/plugins/jquery/jquery-1.9.1.min.js"></script>
+
+<script src="http://localhost:3030/socket.io/socket.io.js"></script>
+
+<script src="/js/Chart.bundle.min.js"></script>
+<script src="/js/canvasjs.min.js"></script>
+<script src="/js/moment.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#datatable4').DataTable({
+      columns: [{
+          title: 'IP отправителя',
+          data: 'array.IpTO',
+        },
+        {
+          title: 'IP получаетля',
+          data: 'array.IpFROM',
+        },
+        {
+          title: 'Протокол',
+          data: 'array.protocol',
+        },
+        {
+          title: 'Кол-во пакетов',
+          data: 'count',
+        },
+        {
+          title: 'Сумма пакетов',
+          data: 'size',
+        },
+        {
+          title: 'Время',
+          data: 'date',
+        },
+      ],
+    });
+
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var ctx3 = document.getElementById('myChart3').getContext('2d');
+
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [0],
+        datasets: [{
+          data: [0],
+          label: "TCP",
+          borderColor: "#3e95cd",
+          fill: false
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'TCP пакеты'
+        }
+      }
+    });
+
+    var myChart2 = new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: [0],
+        datasets: [{
+          data: [0],
+          label: "UDP",
+          borderColor: "#3e95cd",
+          fill: false
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'UDP пакеты'
+        }
+      }
+    });
+
+    var myChart3 = new Chart(ctx3, {
+      type: 'line',
+      data: {
+        labels: [0],
+        datasets: [{
+          data: [0],
+          label: "ICMP",
+          borderColor: "#3e95cd",
+          fill: false
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'ICMP пакеты'
+        }
+      }
+    });
+
+    var socket = io("localhost:3030");
+    let dataTime = Math.round(new Date().getTime() / 1000.0);
+
+    socket.on('countDIV', function (countData) {
+
+      document.getElementById("countPAC").innerHTML = "<h1>Количество пакетов с момента запуска: " + countData +
+        "</h1>"
+
+    })
+    socket.on('countZero', (data) => {
+
+      document.getElementById("speedPAC").innerHTML = "<h1>Скорость обмена: " + 0 + " Мбит/сек</h1>"
+    })
+    socket.emit('podkl_statistics');
+    socket.on("graph", function (data_request) {
+
+
+      data_request.forEach(element => {
+        countPAC = +element.size
+      })
+      let num = ((countPAC / 5) * 8) / 1024 / 1024;
+
+      document.getElementById("speedPAC").innerHTML = "<h1>Скорость обмена: " + num.toFixed(4) +
+        " Мбит/сек</h1>"
+      console.log("count", countPAC / 5)
+
+      if (myChart.data.datasets[0].data.length > 50) {
+        myChart.data.datasets[0].data.splice(0, 50);
+        myChart.data.labels.splice(0, 100);
+        myChart.update();
+      } else if (myChart2.data.datasets[0].data.length > 50) {
+        myChart2.data.datasets[0].data.splice(0, 50);
+        myChart2.data.labels.splice(0, 100);
+        myChart2.update();
+      } else if (myChart3.data.datasets[0].data.length > 50) {
+        myChart3.data.datasets[0].data.splice(0, 50);
+        myChart3.data.labels.splice(0, 100);
+        myChart3.update();
+      }
+
+    });
+    socket.on("graph", function (data_request) {
+      data_request.forEach(element => {
+        if (element.array.protocol == "tcp") {
+          if (element.date > dataTime) {
+            let ss = new Date(element.date * 1000)
+
+            myChart.data.datasets[0].data.push(element.count);
+            myChart.data.labels.push(time());
+            myChart.update();
+          } else {
+
+          }
+        } else if (element.array.protocol == "UDP,") {
+          if (element.date > dataTime) {
+
+            myChart2.data.datasets[0].data.push(element.count);
+            myChart2.data.labels.push(time());
+            myChart2.update();
+          } else {
+
+          }
+        } else if (element.array.protocol == "ICMP") {
+          if (element.date > dataTime) {
+            let ss = new Date(element.date * 1000)
+            myChart3.data.datasets[0].data.push(element.count);
+            myChart3.data.labels.push(time());
+            myChart3.update();
+          } else {
+
+          }
+        }
+      });
+    })
+
+    socket.on("countZero", () => {
+      console.log("net resultats ")
+
+      console.log('чисто')
+
+      myChart.data.datasets[0].data.push(0);
+      myChart.data.labels.push(time());
+      myChart.update();
+      myChart2.data.datasets[0].data.push(0);
+      myChart2.data.labels.push(time());
+      myChart2.update();
+      myChart3.data.datasets[0].data.push(0);
+      myChart3.data.labels.push(time());
+      myChart3.update();
+    })
+
+
+    function time() {
+      let timeUnix = ((new Date().getTime() / 1000) | 0)
+      let time = new Date(timeUnix * 1000).toLocaleTimeString()
+      return time;
+    }
+
+    socket.on("packetsResult", (element) => {
+      $('tbody').children().remove()
+      console.log(element)
+      element.forEach((element) => {
+        var tbody = document.getElementById('myTable').getElementsByTagName("TBODY")[0];
+        var row = document.createElement("TR")
+        var td1 = document.createElement("TD")
+        td1.appendChild(document.createTextNode(element.array.IpTO))
+        var td2 = document.createElement("TD")
+        td2.appendChild(document.createTextNode(element.array.IpFROM))
+        var td3 = document.createElement("TD")
+        td3.appendChild(document.createTextNode(element.array.protocol))
+        var td4 = document.createElement("TD")
+        td4.appendChild(document.createTextNode(element.count))
+        var td5 = document.createElement("TD")
+        td5.appendChild(document.createTextNode(element.size))
+        var td6 = document.createElement("TD")
+        td6.appendChild(document.createTextNode(new Date(element.date * 1000).toLocaleTimeString()))
+        row.appendChild(td1);
+        row.appendChild(td2);
+        row.appendChild(td3);
+        row.appendChild(td4);
+        row.appendChild(td5);
+        row.appendChild(td6);
+        tbody.appendChild(row);
+      })
+    })
+  })
+</script>
+
+
+</html>

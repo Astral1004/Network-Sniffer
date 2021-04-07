@@ -1,0 +1,93 @@
+<div class="col-md-12">
+  <div class="row">
+    <div class="page-title">
+      <h1 style="padding-left: 20px">Редактирование пользователя</h1>
+    </div>
+  </div>
+</div>
+<div class="col-md-2"></div>
+<div class="col-md-8">
+  <form class="form" method="POST">
+    <div class="col-md-12">
+      <div class="field item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align"
+          >Тип аккаунта:<span class="required">*</span></label
+        >
+        <div class="col-md-9 col-sm-9">
+          <select
+            name="typeUser"
+            style="width: 100%"
+            id="typeUser"
+            class="form-control"
+            readonly
+          >
+            <option value="{{ user.typeUser }}">{{ user.typeUser }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="field item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align"
+          >Логин<span class="required">*</span></label
+        >
+        <div class="col-md-9 col-sm-9">
+          <input
+            class="form-control"
+            id="login"
+            type="text"
+            name="login"
+            required="required"
+            placeholder="Введите логин"
+            value="{{ user.login }}"
+            readonly
+            
+          />
+        </div>
+      </div>
+      <div class="field item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align"
+          >Пароль<span class="required">*</span></label
+        >
+        <div class="col-md-9 col-sm-9">
+          <input
+            class="form-control"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Введите пароль"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*]).{8,}"
+            title="Минимум 8 символов, включая заглавные и строчные буквы, цифры и уникальный символ"
+            required=""
+            value="{{ user.password }}"
+          />
+        </div>
+      </div>
+      <input type="hidden" name="_csrf" value="{{ csrf }}" />
+      <div class="field form-group" style="float: right">
+        <div class="col-md-12">
+          <a href="/users" class="btn btn-danger"> Отмена </a>
+          <button type="submit" class="btn btn-success">Изменить</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  function hideshow() {
+    var password = document.getElementById('password1');
+    var slash = document.getElementById('slash');
+    var eye = document.getElementById('eye');
+
+    if (password.type === 'password') {
+      password.type = 'text';
+      slash.style.display = 'block';
+      eye.style.display = 'none';
+    } else {
+      password.type = 'password';
+      slash.style.display = 'none';
+      eye.style.display = 'block';
+    }
+  }
+  // initialize a validator instance from the "FormValidator" constructor.
+  // A "<form>" element is optionally passed as an argument, but is not a must
+</script>

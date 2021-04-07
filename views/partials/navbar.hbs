@@ -1,0 +1,76 @@
+<div class="TopNavbar header navbar navbar-default navbar-fixed-top">
+  <div class="header navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header col-md-8">
+      <a href="/statistics" class="">
+        <div alt="" class="navbar-logo"></div>
+        <span class="logo-repeat"><strong>ППД ОУ</strong></span>
+      </a>
+      <button type="button" class="navbar-toggle" data-click="top-menu-toggled">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="col-md-4">
+      <ul class="navbar-nav navbar-right">
+        <li class="dropdown navbar-user">
+          <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="" style="color: #fff"
+              >{{ login }}
+              <i
+                class="fa fa-user fa-2x"
+                style="color: #fff; margin-left: 5px"
+              ></i
+            ></span>
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/logout">Выход</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="top-menu" class="top-menu">
+    <ul class="nav">
+      {{#if (checkFlag flag.view.viewStatistics.flag)}}
+      <li class="">
+        <a class="" href="/statistics">
+          <span>Статистика</span>
+        </a>
+      </li>
+      {{/if}}
+
+      {{#if (checkFlag flag.view.viewUsers.flag)}}
+      {{#if styleUsers}}
+      <li class="active">
+        <a href="/users">
+          <span>Пользователи</span>
+        </a>
+      </li>
+      {{else}}
+      <li class="">
+        <a href="/users">
+          <span>Пользователи</span>
+        </a>
+      </li>
+      {{/if}}
+      {{/if}}
+      {{#if (checkFlag flag.view.viewMatrix.flag)}}
+      {{# if styleAccess}}
+      <li class="active">
+        <a href="/accesscontrol">
+          <span>Разграничение доступа</span>
+        </a>
+      </li>
+      {{else}}
+      <li class="">
+        <a href="/accesscontrol">
+          <span>Разграничение доступа</span>
+        </a>
+      </li>
+      {{/if}}
+      {{/if}}
+    </ul>
+  </div>
+</div>
