@@ -1,2 +1,4 @@
 # Network-Sniffer
-Sniffer of the network, made in the web interface
+Данный веб интерфейс позволяет отслеживать сетевой трафик в локальной сети.<br>
+В данном приложении реализован следующий функционал: сбор и вывод snapshot сетевого трафика
+<a href="url"><img src="Sniffer1.png" ></a>
